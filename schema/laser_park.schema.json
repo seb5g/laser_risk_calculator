@@ -134,6 +134,98 @@
       "title": "Beam",
       "type": "object"
     },
+    "CollectiveProtection": {
+      "additionalProperties": false,
+      "description": "Une protection collective en place, avec ce qu'elle protège et son suivi.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ProtectionKind"
+        },
+        "description": {
+          "description": "Ce qui est en place, en une phrase",
+          "title": "Description",
+          "type": "string"
+        },
+        "location_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Lieu où elle est installée",
+          "title": "Location Id"
+        },
+        "laser_ids": {
+          "description": "Lasers qu'elle protège",
+          "items": {
+            "type": "string"
+          },
+          "title": "Laser Ids",
+          "type": "array"
+        },
+        "interlocked": {
+          "default": false,
+          "description": "Reliée à un verrouillage coupant le laser",
+          "title": "Interlocked",
+          "type": "boolean"
+        },
+        "optical_density": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Densité optique, pour un écran ou un hublot",
+          "title": "Optical Density"
+        },
+        "last_check": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Date du dernier contrôle",
+          "title": "Last Check"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "description"
+      ],
+      "title": "CollectiveProtection",
+      "type": "object"
+    },
     "Eyewear": {
       "additionalProperties": false,
       "description": "Lunettes de protection : densité optique valable entre deux longueurs d'onde.",
@@ -308,6 +400,23 @@
       "title": "Location",
       "type": "object"
     },
+    "ProtectionKind": {
+      "description": "Famille de protection collective (par opposition aux lunettes, individuelles).",
+      "enum": [
+        "enclosure",
+        "beam_tube",
+        "beam_stop",
+        "shutter",
+        "screen",
+        "interlock",
+        "emergency_stop",
+        "warning_light",
+        "access_control",
+        "other"
+      ],
+      "title": "ProtectionKind",
+      "type": "string"
+    },
     "RiskAssessment": {
       "additionalProperties": false,
       "description": "Résultat daté d'une évaluation pour un faisceau et un lieu.",
@@ -388,6 +497,13 @@
           },
           "title": "Eyewear Ids",
           "type": "array"
+        },
+        "collective_protection_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Collective Protection Ids",
+          "type": "array"
         }
       },
       "required": [
@@ -431,6 +547,13 @@
         "$ref": "#/$defs/Eyewear"
       },
       "title": "Eyewear",
+      "type": "array"
+    },
+    "collective_protections": {
+      "items": {
+        "$ref": "#/$defs/CollectiveProtection"
+      },
+      "title": "Collective Protections",
       "type": "array"
     },
     "assessments": {

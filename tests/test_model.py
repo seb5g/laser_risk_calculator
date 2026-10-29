@@ -49,3 +49,17 @@ def test_park_checks_references():
                  beams=[dict(laser_type='continuous', wavelength='633 nm', power='1 mW')])
     with pytest.raises(ValidationError):
         LaserPark(unit_name='u', lasers=[laser])
+
+
+def test_collective_protection_references():
+    laser = dict(id='l1', name='x', beams=[dict(laser_type='continuous', wavelength='633 nm', power='1 mW')])
+    protection = dict(id='p1', kind='interlock', description='Contact de porte', laser_ids=['l1'])
+    park = LaserPark(unit_name='u', lasers=[laser], collective_protections=[protection])
+    assert park.collective_protections[0].interlocked is False
+    with pytest.raises(ValidationError):
+        LaserPark(unit_name='u', lasers=[laser],
+                  collective_protections=[dict(protection, laser_ids=['absent'])])
+    with pytest.raises(ValidationError):
+        LaserPark(unit_name='u', lasers=[laser], collective_protections=[protection],
+                  assessments=[dict(date='2026-01-01', laser_id='l1', beam_name='main',
+                                    collective_protection_ids=['absent'])])

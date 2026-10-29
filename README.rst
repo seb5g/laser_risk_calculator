@@ -63,6 +63,18 @@ Un fichier JSON de référence et son schéma
     park = load_park('examples/parc_exemple.json')   # valide les références entre objets
     save_park(park, 'copie.json')
 
+Les protections collectives
+---------------------------
+
+Capotages, verrouillages de porte, arrêts de faisceau, signalisation : chaque protection en
+place a un type, un lieu, les lasers qu'elle protège, un éventuel verrouillage et la date du
+dernier contrôle. Les évaluations de risque y renvoient par identifiant.
+
+.. code-block:: python
+
+    for item in park.collective_protections:
+        print(item.kind.value, item.laser_ids, item.interlocked)
+
 Un calcul séparé des interfaces
 -------------------------------
 
@@ -107,7 +119,7 @@ Structure
 
     src/laser_risk_calculator/
         units.py            grandeurs avec unités (pint)
-        calculator/         laser.py, park.py (schéma), exposure.py (calcul)
+        calculator/         laser.py, park.py (schéma, protections), exposure.py (calcul)
         storage/            json_file.py, elabftw.py
         schema.py, cli.py   JSON Schema et ligne de commande
         qt_backend/         interface autonome

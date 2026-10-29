@@ -50,11 +50,83 @@
     }
   ],
   "locations": [
-    {"id": "salle-101", "building": "Bâtiment A", "room": "101", "optical_table": "Table 1"}
+    {
+      "id": "salle-101",
+      "building": "Bâtiment A",
+      "room": "101",
+      "optical_table": "Table 1"
+    }
   ],
   "eyewear": [
-    {"id": "lunettes-rouge", "name": "Lunettes rouge-proche IR", "optical_density": 4,
-     "wavelength_min": "600 nm", "wavelength_max": "900 nm"}
+    {
+      "id": "lunettes-rouge",
+      "name": "Lunettes rouge-proche IR",
+      "optical_density": 4,
+      "wavelength_min": "600 nm",
+      "wavelength_max": "900 nm"
+    }
   ],
-  "assessments": []
+  "collective_protections": [
+    {
+      "id": "capot-ti-sa",
+      "kind": "enclosure",
+      "description": "Capotage de la table du Ti:Sa avec hublots filtrants",
+      "location_id": "salle-101",
+      "laser_ids": [
+        "ti-sa-01"
+      ],
+      "interlocked": true,
+      "optical_density": 4,
+      "last_check": "2026-09-15"
+    },
+    {
+      "id": "porte-101",
+      "kind": "interlock",
+      "description": "Contact de porte coupant l'obturateur du Ti:Sa à l'ouverture",
+      "location_id": "salle-101",
+      "laser_ids": [
+        "ti-sa-01"
+      ],
+      "interlocked": true,
+      "last_check": "2026-09-15"
+    },
+    {
+      "id": "voyant-101",
+      "kind": "warning_light",
+      "description": "Voyant rouge au-dessus de la porte, allumé quand un laser est actif",
+      "location_id": "salle-101",
+      "laser_ids": [
+        "hene-01",
+        "ti-sa-01"
+      ]
+    },
+    {
+      "id": "arret-hene",
+      "kind": "beam_stop",
+      "description": "Arrêt de faisceau en fin de trajet du HeNe",
+      "location_id": "salle-101",
+      "laser_ids": [
+        "hene-01"
+      ]
+    }
+  ],
+  "assessments": [
+    {
+      "date": "2026-09-15",
+      "laser_id": "ti-sa-01",
+      "beam_name": "fondamental",
+      "location_id": "salle-101",
+      "measures": [
+        "Port des lunettes en cas d'ouverture du capot"
+      ],
+      "eyewear_ids": [
+        "lunettes-rouge"
+      ],
+      "collective_protection_ids": [
+        "capot-ti-sa",
+        "porte-101",
+        "voyant-101"
+      ]
+    }
+  ]
 }

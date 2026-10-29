@@ -10,6 +10,13 @@ Le contexte et les décisions sont dans le document de cadrage du projet.
    continu visible, 400 à 700 nm). Ils doivent être validés par des référents laser avant
    tout usage réel. Le schéma est en version 0.1.0 et va évoluer.
 
+Licence
+=======
+
+Le code est publié sous licence EUPL-1.2 (voir ``LICENSE``). Le schéma de données et sa
+documentation sont prévus sous CC-BY 4.0. Le code des versions antérieures à ce changement
+était sous licence MIT ; l'auteur en détient les droits.
+
 Installation
 ============
 

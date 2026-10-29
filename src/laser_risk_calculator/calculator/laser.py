@@ -1,7 +1,7 @@
-"""Description d'un laser et de ses faisceaux (sorties).
+"""Description of a laser and its beams (outputs).
 
-Un laser peut avoir plusieurs sorties (fondamental, harmoniques, sortie d'un OPO) : le calcul
-d'exposition se fait par faisceau.
+A laser can have several outputs (fundamental, harmonics, OPO output): the exposure
+calculation is done per beam.
 """
 from enum import Enum
 from typing import List, Optional
@@ -14,7 +14,7 @@ from laser_risk_calculator.units import (Angle, Duration, Energy, Frequency, Len
 
 
 class LaserType(str, Enum):
-    """Régime d'émission d'un faisceau."""
+    """Emission regime of a beam."""
     Continuous = 'continuous'
     Pulsed = 'pulsed'
 
@@ -24,37 +24,37 @@ class LaserType(str, Enum):
 
 
 class Beam(BaseModel):
-    """Une sortie d'un laser, avec les paramètres dont dépend le calcul d'exposition."""
+    """One output of a laser, with the parameters the exposure calculation depends on."""
     model_config = ConfigDict(extra='forbid')
 
-    name: str = Field('main', description='Nom de la sortie, unique dans le laser')
+    name: str = Field('main', description='Name of the output, unique within the laser')
     laser_type: LaserType
     wavelength: Wavelength
-    power: Optional[Power] = Field(None, description='Puissance continue ou moyenne')
+    power: Optional[Power] = Field(None, description='Continuous or average power')
     pulse_energy: Optional[Energy] = None
     pulse_duration: Optional[Duration] = None
     repetition_rate: Optional[Frequency] = None
-    diameter: Optional[Length] = Field(None, description='Diamètre du faisceau en sortie')
-    divergence: Optional[Angle] = Field(None, description='Divergence pleine')
+    diameter: Optional[Length] = Field(None, description='Beam diameter at the output')
+    divergence: Optional[Angle] = Field(None, description='Full divergence angle')
 
     @model_validator(mode='after')
     def _check_regime(self):
         if self.laser_type is LaserType.Pulsed and self.pulse_duration is None:
-            raise ValueError(f'Faisceau « {self.name} » impulsionnel : la durée d\'impulsion est requise')
+            raise ValueError(f'Pulsed beam "{self.name}": the pulse duration is required')
         if self.laser_type is LaserType.Continuous and self.power is None:
-            raise ValueError(f'Faisceau « {self.name} » continu : la puissance est requise')
+            raise ValueError(f'Continuous beam "{self.name}": the power is required')
         return self
 
 
 class Laser(BaseModel):
-    """Un laser du parc d'une unité."""
+    """A laser of a unit's park."""
     model_config = ConfigDict(extra='forbid')
 
-    id: str = Field(default_factory=lambda: uuid4().hex[:8], description='Identifiant stable')
+    id: str = Field(default_factory=lambda: uuid4().hex[:8], description='Stable identifier')
     name: str
     manufacturer: Optional[str] = None
     model: Optional[str] = None
-    location_id: Optional[str] = Field(None, description='Identifiant du lieu où il est utilisé')
+    location_id: Optional[str] = Field(None, description='Identifier of the place where it is used')
     beams: List[Beam] = Field(min_length=1)
     notes: Optional[str] = None
 
@@ -62,14 +62,14 @@ class Laser(BaseModel):
     def _check_beams(self):
         names = [beam.name for beam in self.beams]
         if len(set(names)) != len(names):
-            raise ValueError(f'Laser « {self.name} » : noms de faisceaux en double {names}')
+            raise ValueError(f'Laser "{self.name}": duplicate beam names {names}')
         return self
 
     def beam(self, name: str) -> Beam:
         for beam in self.beams:
             if beam.name == name:
                 return beam
-        raise KeyError(f'Laser « {self.name} » : pas de faisceau « {name} »')
+        raise KeyError(f'Laser "{self.name}": no beam "{name}"')
 
 
 if __name__ == '__main__':

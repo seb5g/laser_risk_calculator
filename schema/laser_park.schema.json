@@ -2,11 +2,11 @@
   "$defs": {
     "Beam": {
       "additionalProperties": false,
-      "description": "Une sortie d'un laser, avec les paramètres dont dépend le calcul d'exposition.",
+      "description": "One output of a laser, with the parameters the exposure calculation depends on.",
       "properties": {
         "name": {
           "default": "main",
-          "description": "Nom de la sortie, unique dans le laser",
+          "description": "Name of the output, unique within the laser",
           "title": "Name",
           "type": "string"
         },
@@ -14,21 +14,21 @@
           "$ref": "#/$defs/LaserType"
         },
         "wavelength": {
-          "description": "Longueur d'onde, avec son unité, par exemple « 515 nm »",
+          "description": "Wavelength, with its unit, for example \"515 nm\"",
           "examples": [
             "515 nm"
           ],
-          "title": "Longueur d'onde",
+          "title": "Wavelength",
           "type": "string"
         },
         "power": {
           "anyOf": [
             {
-              "description": "Puissance, avec son unité, par exemple « 5 mW »",
+              "description": "Power, with its unit, for example \"5 mW\"",
               "examples": [
                 "5 mW"
               ],
-              "title": "Puissance",
+              "title": "Power",
               "type": "string"
             },
             {
@@ -36,17 +36,17 @@
             }
           ],
           "default": null,
-          "description": "Puissance continue ou moyenne",
+          "description": "Continuous or average power",
           "title": "Power"
         },
         "pulse_energy": {
           "anyOf": [
             {
-              "description": "Énergie, avec son unité, par exemple « 10 uJ »",
+              "description": "Energy, with its unit, for example \"10 uJ\"",
               "examples": [
                 "10 uJ"
               ],
-              "title": "Énergie",
+              "title": "Energy",
               "type": "string"
             },
             {
@@ -59,11 +59,11 @@
         "pulse_duration": {
           "anyOf": [
             {
-              "description": "Durée, avec son unité, par exemple « 100 fs »",
+              "description": "Duration, with its unit, for example \"100 fs\"",
               "examples": [
                 "100 fs"
               ],
-              "title": "Durée",
+              "title": "Duration",
               "type": "string"
             },
             {
@@ -76,11 +76,11 @@
         "repetition_rate": {
           "anyOf": [
             {
-              "description": "Fréquence, avec son unité, par exemple « 80 MHz »",
+              "description": "Frequency, with its unit, for example \"80 MHz\"",
               "examples": [
                 "80 MHz"
               ],
-              "title": "Fréquence",
+              "title": "Frequency",
               "type": "string"
             },
             {
@@ -93,11 +93,11 @@
         "diameter": {
           "anyOf": [
             {
-              "description": "Longueur, avec son unité, par exemple « 0.7 mm »",
+              "description": "Length, with its unit, for example \"0.7 mm\"",
               "examples": [
                 "0.7 mm"
               ],
-              "title": "Longueur",
+              "title": "Length",
               "type": "string"
             },
             {
@@ -105,13 +105,13 @@
             }
           ],
           "default": null,
-          "description": "Diamètre du faisceau en sortie",
+          "description": "Beam diameter at the output",
           "title": "Diameter"
         },
         "divergence": {
           "anyOf": [
             {
-              "description": "Angle, avec son unité, par exemple « 1.2 mrad »",
+              "description": "Angle, with its unit, for example \"1.2 mrad\"",
               "examples": [
                 "1.2 mrad"
               ],
@@ -123,7 +123,7 @@
             }
           ],
           "default": null,
-          "description": "Divergence pleine",
+          "description": "Full divergence angle",
           "title": "Divergence"
         }
       },
@@ -136,7 +136,7 @@
     },
     "CollectiveProtection": {
       "additionalProperties": false,
-      "description": "Une protection collective en place, avec ce qu'elle protège et son suivi.",
+      "description": "A collective protection in place, with what it protects and its follow-up.",
       "properties": {
         "id": {
           "title": "Id",
@@ -146,7 +146,7 @@
           "$ref": "#/$defs/ProtectionKind"
         },
         "description": {
-          "description": "Ce qui est en place, en une phrase",
+          "description": "What is in place, in one sentence",
           "title": "Description",
           "type": "string"
         },
@@ -160,11 +160,11 @@
             }
           ],
           "default": null,
-          "description": "Lieu où elle est installée",
+          "description": "Place where it is installed",
           "title": "Location Id"
         },
         "laser_ids": {
-          "description": "Lasers qu'elle protège",
+          "description": "Lasers it protects",
           "items": {
             "type": "string"
           },
@@ -173,7 +173,7 @@
         },
         "interlocked": {
           "default": false,
-          "description": "Reliée à un verrouillage coupant le laser",
+          "description": "Connected to an interlock that cuts the laser",
           "title": "Interlocked",
           "type": "boolean"
         },
@@ -188,7 +188,7 @@
             }
           ],
           "default": null,
-          "description": "Densité optique, pour un écran ou un hublot",
+          "description": "Optical density, for a screen or a window",
           "title": "Optical Density"
         },
         "last_check": {
@@ -202,7 +202,7 @@
             }
           ],
           "default": null,
-          "description": "Date du dernier contrôle",
+          "description": "Date of the last check",
           "title": "Last Check"
         },
         "notes": {
@@ -228,7 +228,7 @@
     },
     "Eyewear": {
       "additionalProperties": false,
-      "description": "Lunettes de protection : densité optique valable entre deux longueurs d'onde.",
+      "description": "Protective eyewear: optical density valid between two wavelengths.",
       "properties": {
         "id": {
           "title": "Id",
@@ -244,19 +244,19 @@
           "type": "number"
         },
         "wavelength_min": {
-          "description": "Longueur d'onde, avec son unité, par exemple « 515 nm »",
+          "description": "Wavelength, with its unit, for example \"515 nm\"",
           "examples": [
             "515 nm"
           ],
-          "title": "Longueur d'onde",
+          "title": "Wavelength",
           "type": "string"
         },
         "wavelength_max": {
-          "description": "Longueur d'onde, avec son unité, par exemple « 515 nm »",
+          "description": "Wavelength, with its unit, for example \"515 nm\"",
           "examples": [
             "515 nm"
           ],
-          "title": "Longueur d'onde",
+          "title": "Wavelength",
           "type": "string"
         }
       },
@@ -272,10 +272,10 @@
     },
     "Laser": {
       "additionalProperties": false,
-      "description": "Un laser du parc d'une unité.",
+      "description": "A laser of a unit's park.",
       "properties": {
         "id": {
-          "description": "Identifiant stable",
+          "description": "Stable identifier",
           "title": "Id",
           "type": "string"
         },
@@ -317,7 +317,7 @@
             }
           ],
           "default": null,
-          "description": "Identifiant du lieu où il est utilisé",
+          "description": "Identifier of the place where it is used",
           "title": "Location Id"
         },
         "beams": {
@@ -349,7 +349,7 @@
       "type": "object"
     },
     "LaserType": {
-      "description": "Régime d'émission d'un faisceau.",
+      "description": "Emission regime of a beam.",
       "enum": [
         "continuous",
         "pulsed"
@@ -401,7 +401,7 @@
       "type": "object"
     },
     "ProtectionKind": {
-      "description": "Famille de protection collective (par opposition aux lunettes, individuelles).",
+      "description": "Kind of collective protection (as opposed to eyewear, which is individual).",
       "enum": [
         "enclosure",
         "beam_tube",
@@ -419,7 +419,7 @@
     },
     "RiskAssessment": {
       "additionalProperties": false,
-      "description": "Résultat daté d'une évaluation pour un faisceau et un lieu.",
+      "description": "Dated result of an assessment for one beam and one place.",
       "properties": {
         "date": {
           "format": "date",
@@ -456,7 +456,7 @@
             }
           ],
           "default": null,
-          "description": "EMP retenue, avec son unité",
+          "description": "MPE retained, with its unit",
           "title": "Mpe"
         },
         "nohd": {
@@ -469,7 +469,7 @@
             }
           ],
           "default": null,
-          "description": "DNRO retenue, avec son unité",
+          "description": "NOHD retained, with its unit",
           "title": "Nohd"
         },
         "laser_class": {
@@ -516,7 +516,7 @@
     }
   },
   "additionalProperties": false,
-  "description": "Racine du fichier de données : c'est ce schéma que l'on publie en JSON Schema.",
+  "description": "Root of the data file: this is the schema published as JSON Schema.",
   "properties": {
     "schema_version": {
       "default": "0.1.0",
@@ -524,7 +524,7 @@
       "type": "string"
     },
     "unit_name": {
-      "description": "Nom de l'unité ou du laboratoire",
+      "description": "Name of the unit or laboratory",
       "title": "Unit Name",
       "type": "string"
     },
@@ -567,7 +567,7 @@
   "required": [
     "unit_name"
   ],
-  "title": "Parc laser d'une unité",
+  "title": "Laser park of a unit",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema"
 }

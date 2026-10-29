@@ -6,7 +6,7 @@ from laser_risk_calculator.calculator.exposure import evaluate, mpe_irradiance
 from laser_risk_calculator.storage import load_park
 from laser_risk_calculator.units import Q_
 
-EXAMPLE = Path(__file__).parent.parent / 'examples' / 'parc_exemple.json'
+EXAMPLE = Path(__file__).parent.parent / 'examples' / 'example_park.json'
 
 
 def test_visible_cw_mpe_for_blink_reflex():
@@ -20,7 +20,7 @@ def test_nohd_of_a_five_milliwatt_helium_neon():
 
 
 def test_out_of_scope_is_explicit():
-    beam = load_park(EXAMPLE).laser('ti-sa-01').beam('fondamental')
+    beam = load_park(EXAMPLE).laser('ti-sa-01').beam('fundamental')
     with pytest.raises(NotImplementedError):
         evaluate(beam)
     cw_ir = load_park(EXAMPLE).laser('hene-01').beam('main').model_copy(update={'wavelength': Q_(1064, 'nm')})

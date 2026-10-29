@@ -1,11 +1,11 @@
-"""Correspondance entre un laser et une ressource eLabFTW.
+"""Mapping between a laser and an eLabFTW resource.
 
-Un laser = une ressource. Le JSON complet du laser est rangé dans les métadonnées de la
-ressource, sous la clé ``laser_risk_calculator``, et un résumé lisible est mis dans
-``extra_fields`` pour apparaître dans l'interface d'eLabFTW.
+One laser = one resource. The full JSON of the laser is stored in the resource metadata,
+under the ``laser_risk_calculator`` key, and a readable summary is put in ``extra_fields`` so
+that it shows up in the eLabFTW interface.
 
-ESQUISSE À VALIDER avec les développeurs d'eLabFTW : ces fonctions ne font aucun appel
-réseau et leur forme n'a pas été confrontée à une instance réelle.
+SKETCH TO BE VALIDATED with the eLabFTW developers: these functions make no network call and
+their shape has not been checked against a real instance.
 """
 import json
 from typing import Any, Dict, Optional
@@ -19,16 +19,16 @@ METADATA_KEY = 'laser_risk_calculator'
 def _extra_fields(laser: Laser) -> Dict[str, Dict[str, Any]]:
     wavelengths = ', '.join(str(beam.wavelength.to('nm')) for beam in laser.beams)
     fields = {
-        'Longueurs d\'onde': wavelengths,
-        'Régimes': ', '.join(sorted({beam.laser_type.value for beam in laser.beams})),
-        'Fabricant': laser.manufacturer or '',
-        'Modèle': laser.model or '',
+        'Wavelengths': wavelengths,
+        'Regimes': ', '.join(sorted({beam.laser_type.value for beam in laser.beams})),
+        'Manufacturer': laser.manufacturer or '',
+        'Model': laser.model or '',
     }
     return {title: {'type': 'text', 'value': value} for title, value in fields.items()}
 
 
 def laser_to_resource(laser: Laser, category_id: Optional[int] = None) -> Dict[str, Any]:
-    """Corps d'une ressource eLabFTW pour ce laser."""
+    """Body of an eLabFTW resource for this laser."""
     metadata = {
         'extra_fields': _extra_fields(laser),
         METADATA_KEY: {'schema_version': SCHEMA_VERSION, 'laser': json.loads(laser.model_dump_json())},
@@ -40,12 +40,12 @@ def laser_to_resource(laser: Laser, category_id: Optional[int] = None) -> Dict[s
 
 
 def laser_from_resource(resource: Dict[str, Any]) -> Laser:
-    """Reconstruit le laser depuis une ressource ; lève ``ValueError`` si elle n'en décrit pas."""
+    """Rebuild the laser from a resource; raises ``ValueError`` if it does not describe one."""
     metadata = resource.get('metadata') or '{}'
     if isinstance(metadata, str):
         metadata = json.loads(metadata)
     try:
         content = metadata[METADATA_KEY]['laser']
     except KeyError as e:
-        raise ValueError(f'Ressource « {resource.get("title")} » sans métadonnées {METADATA_KEY}') from e
+        raise ValueError(f'Resource "{resource.get("title")}" has no {METADATA_KEY} metadata') from e
     return Laser.model_validate(content)

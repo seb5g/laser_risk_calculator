@@ -9,9 +9,9 @@ from laser_risk_calculator.calculator.laser import Beam, Laser, LaserType
 
 
 class LaserGui(CustomApp):
-    """Interface autonome : saisie d'un laser à un faisceau et résumé de l'exposition.
+    """Standalone interface: input of a one-beam laser and summary of the exposure.
 
-    Elle ne contient aucune logique de calcul : tout passe par le cœur du paquet.
+    It contains no calculation logic: everything goes through the core of the package.
     """
 
     params = [
@@ -62,14 +62,14 @@ class LaserGui(CustomApp):
                         wavelength=self.settings['wavelength'], **optional)
             laser = Laser(name=self.settings['name'], beams=[beam])
         except ValueError:
-            return  # saisie incomplète ou invalide : on garde le texte précédent
+            return  # incomplete or invalid input: keep the previous text
 
         text = laser.model_dump_json(indent=2)
         try:
             result = evaluate(beam)
-            text += f'\nEMP : {result.mpe:.3~P}\nDNRO : {result.nohd:.3~P}'
+            text += f'\nMPE: {result.mpe:.3~P}\nNOHD: {result.nohd:.3~P}'
         except (NotImplementedError, ValueError) as e:
-            text += f'\nExposition non calculée : {e}'
+            text += f'\nExposure not computed: {e}'
         self.settings.child('laser_repr').setValue(text)
 
 

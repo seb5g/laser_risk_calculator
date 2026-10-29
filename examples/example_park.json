@@ -1,13 +1,13 @@
 {
   "schema_version": "0.1.0",
-  "unit_name": "Laboratoire d'exemple",
+  "unit_name": "Example laboratory",
   "lasers": [
     {
       "id": "hene-01",
-      "name": "HeNe d'alignement",
-      "manufacturer": "Fabricant fictif",
+      "name": "Alignment HeNe",
+      "manufacturer": "Fictional manufacturer",
       "model": "HN-5",
-      "location_id": "salle-101",
+      "location_id": "room-101",
       "beams": [
         {
           "name": "main",
@@ -21,13 +21,13 @@
     },
     {
       "id": "ti-sa-01",
-      "name": "Ti:Sa femtoseconde",
-      "manufacturer": "Fabricant fictif",
+      "name": "Femtosecond Ti:Sa",
+      "manufacturer": "Fictional manufacturer",
       "model": "TS-100",
-      "location_id": "salle-101",
+      "location_id": "room-101",
       "beams": [
         {
-          "name": "fondamental",
+          "name": "fundamental",
           "laser_type": "pulsed",
           "wavelength": "800 nm",
           "power": "1.5 W",
@@ -37,7 +37,7 @@
           "divergence": "0.5 mrad"
         },
         {
-          "name": "harmonique-2",
+          "name": "second-harmonic",
           "laser_type": "pulsed",
           "wavelength": "400 nm",
           "power": "200 mW",
@@ -51,16 +51,16 @@
   ],
   "locations": [
     {
-      "id": "salle-101",
-      "building": "Bâtiment A",
+      "id": "room-101",
+      "building": "Building A",
       "room": "101",
       "optical_table": "Table 1"
     }
   ],
   "eyewear": [
     {
-      "id": "lunettes-rouge",
-      "name": "Lunettes rouge-proche IR",
+      "id": "eyewear-red",
+      "name": "Red / near-IR eyewear",
       "optical_density": 4,
       "wavelength_min": "600 nm",
       "wavelength_max": "900 nm"
@@ -68,10 +68,10 @@
   ],
   "collective_protections": [
     {
-      "id": "capot-ti-sa",
+      "id": "enclosure-ti-sa",
       "kind": "enclosure",
-      "description": "Capotage de la table du Ti:Sa avec hublots filtrants",
-      "location_id": "salle-101",
+      "description": "Enclosure of the Ti:Sa table with filtering windows",
+      "location_id": "room-101",
       "laser_ids": [
         "ti-sa-01"
       ],
@@ -80,10 +80,10 @@
       "last_check": "2026-09-15"
     },
     {
-      "id": "porte-101",
+      "id": "door-101",
       "kind": "interlock",
-      "description": "Contact de porte coupant l'obturateur du Ti:Sa à l'ouverture",
-      "location_id": "salle-101",
+      "description": "Door contact cutting the Ti:Sa shutter when the door opens",
+      "location_id": "room-101",
       "laser_ids": [
         "ti-sa-01"
       ],
@@ -91,20 +91,20 @@
       "last_check": "2026-09-15"
     },
     {
-      "id": "voyant-101",
+      "id": "light-101",
       "kind": "warning_light",
-      "description": "Voyant rouge au-dessus de la porte, allumé quand un laser est actif",
-      "location_id": "salle-101",
+      "description": "Red light above the door, on while a laser is active",
+      "location_id": "room-101",
       "laser_ids": [
         "hene-01",
         "ti-sa-01"
       ]
     },
     {
-      "id": "arret-hene",
+      "id": "stop-hene",
       "kind": "beam_stop",
-      "description": "Arrêt de faisceau en fin de trajet du HeNe",
-      "location_id": "salle-101",
+      "description": "Beam stop at the end of the HeNe path",
+      "location_id": "room-101",
       "laser_ids": [
         "hene-01"
       ]
@@ -114,18 +114,18 @@
     {
       "date": "2026-09-15",
       "laser_id": "ti-sa-01",
-      "beam_name": "fondamental",
-      "location_id": "salle-101",
+      "beam_name": "fundamental",
+      "location_id": "room-101",
       "measures": [
-        "Port des lunettes en cas d'ouverture du capot"
+        "Wear eyewear when the enclosure is opened"
       ],
       "eyewear_ids": [
-        "lunettes-rouge"
+        "eyewear-red"
       ],
       "collective_protection_ids": [
-        "capot-ti-sa",
-        "porte-101",
-        "voyant-101"
+        "enclosure-ti-sa",
+        "door-101",
+        "light-101"
       ]
     }
   ]

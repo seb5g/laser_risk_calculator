@@ -1,4 +1,4 @@
-"""Lecture et écriture d'un parc laser dans un fichier JSON (forme de référence)."""
+"""Reading and writing a laser park in a JSON file (the reference form)."""
 from pathlib import Path
 from typing import Union
 
@@ -6,7 +6,7 @@ from laser_risk_calculator.calculator.park import LaserPark
 
 
 def load_park(path: Union[str, Path]) -> LaserPark:
-    """Lit un fichier et le valide contre le schéma ; lève ``ValidationError`` sinon."""
+    """Read a file and validate it against the schema; raises ``ValidationError`` otherwise."""
     return LaserPark.model_validate_json(Path(path).read_text(encoding='utf-8'))
 
 

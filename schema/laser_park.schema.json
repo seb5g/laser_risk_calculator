@@ -1,0 +1,450 @@
+{
+  "$defs": {
+    "Beam": {
+      "additionalProperties": false,
+      "description": "Une sortie d'un laser, avec les paramètres dont dépend le calcul d'exposition.",
+      "properties": {
+        "name": {
+          "default": "main",
+          "description": "Nom de la sortie, unique dans le laser",
+          "title": "Name",
+          "type": "string"
+        },
+        "laser_type": {
+          "$ref": "#/$defs/LaserType"
+        },
+        "wavelength": {
+          "description": "Longueur d'onde, avec son unité, par exemple « 515 nm »",
+          "examples": [
+            "515 nm"
+          ],
+          "title": "Longueur d'onde",
+          "type": "string"
+        },
+        "power": {
+          "anyOf": [
+            {
+              "description": "Puissance, avec son unité, par exemple « 5 mW »",
+              "examples": [
+                "5 mW"
+              ],
+              "title": "Puissance",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Puissance continue ou moyenne",
+          "title": "Power"
+        },
+        "pulse_energy": {
+          "anyOf": [
+            {
+              "description": "Énergie, avec son unité, par exemple « 10 uJ »",
+              "examples": [
+                "10 uJ"
+              ],
+              "title": "Énergie",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pulse Energy"
+        },
+        "pulse_duration": {
+          "anyOf": [
+            {
+              "description": "Durée, avec son unité, par exemple « 100 fs »",
+              "examples": [
+                "100 fs"
+              ],
+              "title": "Durée",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pulse Duration"
+        },
+        "repetition_rate": {
+          "anyOf": [
+            {
+              "description": "Fréquence, avec son unité, par exemple « 80 MHz »",
+              "examples": [
+                "80 MHz"
+              ],
+              "title": "Fréquence",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repetition Rate"
+        },
+        "diameter": {
+          "anyOf": [
+            {
+              "description": "Longueur, avec son unité, par exemple « 0.7 mm »",
+              "examples": [
+                "0.7 mm"
+              ],
+              "title": "Longueur",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Diamètre du faisceau en sortie",
+          "title": "Diameter"
+        },
+        "divergence": {
+          "anyOf": [
+            {
+              "description": "Angle, avec son unité, par exemple « 1.2 mrad »",
+              "examples": [
+                "1.2 mrad"
+              ],
+              "title": "Angle",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Divergence pleine",
+          "title": "Divergence"
+        }
+      },
+      "required": [
+        "laser_type",
+        "wavelength"
+      ],
+      "title": "Beam",
+      "type": "object"
+    },
+    "Eyewear": {
+      "additionalProperties": false,
+      "description": "Lunettes de protection : densité optique valable entre deux longueurs d'onde.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "optical_density": {
+          "exclusiveMinimum": 0,
+          "title": "Optical Density",
+          "type": "number"
+        },
+        "wavelength_min": {
+          "description": "Longueur d'onde, avec son unité, par exemple « 515 nm »",
+          "examples": [
+            "515 nm"
+          ],
+          "title": "Longueur d'onde",
+          "type": "string"
+        },
+        "wavelength_max": {
+          "description": "Longueur d'onde, avec son unité, par exemple « 515 nm »",
+          "examples": [
+            "515 nm"
+          ],
+          "title": "Longueur d'onde",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "optical_density",
+        "wavelength_min",
+        "wavelength_max"
+      ],
+      "title": "Eyewear",
+      "type": "object"
+    },
+    "Laser": {
+      "additionalProperties": false,
+      "description": "Un laser du parc d'une unité.",
+      "properties": {
+        "id": {
+          "description": "Identifiant stable",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "manufacturer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Manufacturer"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "location_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Identifiant du lieu où il est utilisé",
+          "title": "Location Id"
+        },
+        "beams": {
+          "items": {
+            "$ref": "#/$defs/Beam"
+          },
+          "minItems": 1,
+          "title": "Beams",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "name",
+        "beams"
+      ],
+      "title": "Laser",
+      "type": "object"
+    },
+    "LaserType": {
+      "description": "Régime d'émission d'un faisceau.",
+      "enum": [
+        "continuous",
+        "pulsed"
+      ],
+      "title": "LaserType",
+      "type": "string"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "building": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building"
+        },
+        "room": {
+          "title": "Room",
+          "type": "string"
+        },
+        "optical_table": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Optical Table"
+        }
+      },
+      "required": [
+        "id",
+        "room"
+      ],
+      "title": "Location",
+      "type": "object"
+    },
+    "RiskAssessment": {
+      "additionalProperties": false,
+      "description": "Résultat daté d'une évaluation pour un faisceau et un lieu.",
+      "properties": {
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        },
+        "laser_id": {
+          "title": "Laser Id",
+          "type": "string"
+        },
+        "beam_name": {
+          "title": "Beam Name",
+          "type": "string"
+        },
+        "location_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location Id"
+        },
+        "mpe": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "EMP retenue, avec son unité",
+          "title": "Mpe"
+        },
+        "nohd": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "DNRO retenue, avec son unité",
+          "title": "Nohd"
+        },
+        "laser_class": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Laser Class"
+        },
+        "measures": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Measures",
+          "type": "array"
+        },
+        "eyewear_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Eyewear Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "date",
+        "laser_id",
+        "beam_name"
+      ],
+      "title": "RiskAssessment",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Racine du fichier de données : c'est ce schéma que l'on publie en JSON Schema.",
+  "properties": {
+    "schema_version": {
+      "default": "0.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unit_name": {
+      "description": "Nom de l'unité ou du laboratoire",
+      "title": "Unit Name",
+      "type": "string"
+    },
+    "lasers": {
+      "items": {
+        "$ref": "#/$defs/Laser"
+      },
+      "title": "Lasers",
+      "type": "array"
+    },
+    "locations": {
+      "items": {
+        "$ref": "#/$defs/Location"
+      },
+      "title": "Locations",
+      "type": "array"
+    },
+    "eyewear": {
+      "items": {
+        "$ref": "#/$defs/Eyewear"
+      },
+      "title": "Eyewear",
+      "type": "array"
+    },
+    "assessments": {
+      "items": {
+        "$ref": "#/$defs/RiskAssessment"
+      },
+      "title": "Assessments",
+      "type": "array"
+    }
+  },
+  "required": [
+    "unit_name"
+  ],
+  "title": "Parc laser d'une unité",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

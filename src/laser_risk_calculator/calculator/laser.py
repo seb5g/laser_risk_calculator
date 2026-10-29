@@ -1,37 +1,78 @@
-from dataclasses import dataclass, field, fields
-from typing import Union, Optional, List, Tuple
+"""Description d'un laser et de ses faisceaux (sorties).
+
+Un laser peut avoir plusieurs sorties (fondamental, harmoniques, sortie d'un OPO) : le calcul
+d'exposition se fait par faisceau.
+"""
+from enum import Enum
+from typing import List, Optional
+from uuid import uuid4
+
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+from laser_risk_calculator.units import (Angle, Duration, Energy, Frequency, Length, Power,
+                                         Wavelength)
 
 
-from pymodaq_utils.enums import BaseEnum, enum_checker
-from pymodaq_data import Q_
+class LaserType(str, Enum):
+    """Régime d'émission d'un faisceau."""
+    Continuous = 'continuous'
+    Pulsed = 'pulsed'
+
+    @classmethod
+    def names(cls) -> List[str]:
+        return [member.name for member in cls]
 
 
-class LaserType(BaseEnum):
-    Continuous = 0
-    Pulsed = 1
+class Beam(BaseModel):
+    """Une sortie d'un laser, avec les paramètres dont dépend le calcul d'exposition."""
+    model_config = ConfigDict(extra='forbid')
+
+    name: str = Field('main', description='Nom de la sortie, unique dans le laser')
+    laser_type: LaserType
+    wavelength: Wavelength
+    power: Optional[Power] = Field(None, description='Puissance continue ou moyenne')
+    pulse_energy: Optional[Energy] = None
+    pulse_duration: Optional[Duration] = None
+    repetition_rate: Optional[Frequency] = None
+    diameter: Optional[Length] = Field(None, description='Diamètre du faisceau en sortie')
+    divergence: Optional[Angle] = Field(None, description='Divergence pleine')
+
+    @model_validator(mode='after')
+    def _check_regime(self):
+        if self.laser_type is LaserType.Pulsed and self.pulse_duration is None:
+            raise ValueError(f'Faisceau « {self.name} » impulsionnel : la durée d\'impulsion est requise')
+        if self.laser_type is LaserType.Continuous and self.power is None:
+            raise ValueError(f'Faisceau « {self.name} » continu : la puissance est requise')
+        return self
 
 
-@dataclass
-class Laser:
-    """Class for describing a laser and its properties."""
+class Laser(BaseModel):
+    """Un laser du parc d'une unité."""
+    model_config = ConfigDict(extra='forbid')
 
+    id: str = Field(default_factory=lambda: uuid4().hex[:8], description='Identifiant stable')
     name: str
-    laser_type: Optional[Union[LaserType, str]] = field(default_factory=LaserType)
-    pulse_duration: Optional[Union[Q_, str]] = field(default_factory=Q_)
-    wavelength: Optional[Union[Q_, str]] = field(default_factory=Q_)
+    manufacturer: Optional[str] = None
+    model: Optional[str] = None
+    location_id: Optional[str] = Field(None, description='Identifiant du lieu où il est utilisé')
+    beams: List[Beam] = Field(min_length=1)
+    notes: Optional[str] = None
 
-    field_titles: Tuple[str] = field(default=('Name', 'Laser type', 'Pulse Duration', 'Wavelength'),
-                                    init=False, repr=False)
+    @model_validator(mode='after')
+    def _check_beams(self):
+        names = [beam.name for beam in self.beams]
+        if len(set(names)) != len(names):
+            raise ValueError(f'Laser « {self.name} » : noms de faisceaux en double {names}')
+        return self
 
-    def __post_init__(self):
-        self.laser_type = enum_checker(LaserType, self.laser_type)
-        self.pulse_duration = Q_(self.pulse_duration)
-        self.wavelength = Q_(self.wavelength)
+    def beam(self, name: str) -> Beam:
+        for beam in self.beams:
+            if beam.name == name:
+                return beam
+        raise KeyError(f'Laser « {self.name} » : pas de faisceau « {name} »')
 
 
 if __name__ == '__main__':
-
-    laser = Laser('my big laser', laser_type=LaserType.Continuous,
-                  pulse_duration='100fs', wavelength='515nm')
-
-    pass
+    laser = Laser(name='my big laser', beams=[Beam(laser_type=LaserType.Pulsed,
+                                                   pulse_duration='100fs', wavelength='515nm')])
+    print(laser.model_dump_json(indent=2))

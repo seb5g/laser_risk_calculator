@@ -1,0 +1,60 @@
+{
+  "schema_version": "0.1.0",
+  "unit_name": "Laboratoire d'exemple",
+  "lasers": [
+    {
+      "id": "hene-01",
+      "name": "HeNe d'alignement",
+      "manufacturer": "Fabricant fictif",
+      "model": "HN-5",
+      "location_id": "salle-101",
+      "beams": [
+        {
+          "name": "main",
+          "laser_type": "continuous",
+          "wavelength": "633 nm",
+          "power": "5 mW",
+          "diameter": "0.7 mm",
+          "divergence": "1.2 mrad"
+        }
+      ]
+    },
+    {
+      "id": "ti-sa-01",
+      "name": "Ti:Sa femtoseconde",
+      "manufacturer": "Fabricant fictif",
+      "model": "TS-100",
+      "location_id": "salle-101",
+      "beams": [
+        {
+          "name": "fondamental",
+          "laser_type": "pulsed",
+          "wavelength": "800 nm",
+          "power": "1.5 W",
+          "pulse_duration": "100 fs",
+          "repetition_rate": "80 MHz",
+          "diameter": "2 mm",
+          "divergence": "0.5 mrad"
+        },
+        {
+          "name": "harmonique-2",
+          "laser_type": "pulsed",
+          "wavelength": "400 nm",
+          "power": "200 mW",
+          "pulse_duration": "100 fs",
+          "repetition_rate": "80 MHz",
+          "diameter": "2 mm",
+          "divergence": "0.5 mrad"
+        }
+      ]
+    }
+  ],
+  "locations": [
+    {"id": "salle-101", "building": "Bâtiment A", "room": "101", "optical_table": "Table 1"}
+  ],
+  "eyewear": [
+    {"id": "lunettes-rouge", "name": "Lunettes rouge-proche IR", "optical_density": 4,
+     "wavelength_min": "600 nm", "wavelength_max": "900 nm"}
+  ],
+  "assessments": []
+}

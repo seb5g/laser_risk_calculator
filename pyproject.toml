@@ -8,11 +8,12 @@ authors = [
   { name="Sebastien J. Weber", email="sebastien.weber@cemes.fr" },
 ]
 
-dependencies = ['pymodaq_gui']
+dependencies = ['pint', 'pydantic>=2']
+
 description = "Optical laser damage and risk calculation"
 readme = "README.rst"
 license = { file="LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 name = "laser_risk_calculator"
 
@@ -24,7 +25,6 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -34,9 +34,21 @@ classifiers = [
     "Topic :: Software Development :: User Interfaces",
 ]
 
+[project.optional-dependencies]
+qt = ['pymodaq_gui']
+test = ['pytest']
+
 [project.urls]
-Homepage = "https://github.com/pypa/sampleproject"
-Issues = "https://github.com/pypa/sampleproject/issues"
+Homepage = "https://github.com/seb5g/laser_risk_calculator"
+Issues = "https://github.com/seb5g/laser_risk_calculator/issues"
+
+[project.scripts]
+laser-risk = "laser_risk_calculator.cli:main"
+laser-risk-gui = "laser_risk_calculator.qt_backend.laser_gui:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
 
 [tool.hatch.metadata.hooks.custom]
 

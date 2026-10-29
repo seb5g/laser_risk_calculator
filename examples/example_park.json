@@ -1,0 +1,132 @@
+{
+  "schema_version": "0.1.0",
+  "unit_name": "Example laboratory",
+  "lasers": [
+    {
+      "id": "hene-01",
+      "name": "Alignment HeNe",
+      "manufacturer": "Fictional manufacturer",
+      "model": "HN-5",
+      "location_id": "room-101",
+      "beams": [
+        {
+          "name": "main",
+          "laser_type": "continuous",
+          "wavelength": "633 nm",
+          "power": "5 mW",
+          "diameter": "0.7 mm",
+          "divergence": "1.2 mrad"
+        }
+      ]
+    },
+    {
+      "id": "ti-sa-01",
+      "name": "Femtosecond Ti:Sa",
+      "manufacturer": "Fictional manufacturer",
+      "model": "TS-100",
+      "location_id": "room-101",
+      "beams": [
+        {
+          "name": "fundamental",
+          "laser_type": "pulsed",
+          "wavelength": "800 nm",
+          "power": "1.5 W",
+          "pulse_duration": "100 fs",
+          "repetition_rate": "80 MHz",
+          "diameter": "2 mm",
+          "divergence": "0.5 mrad"
+        },
+        {
+          "name": "second-harmonic",
+          "laser_type": "pulsed",
+          "wavelength": "400 nm",
+          "power": "200 mW",
+          "pulse_duration": "100 fs",
+          "repetition_rate": "80 MHz",
+          "diameter": "2 mm",
+          "divergence": "0.5 mrad"
+        }
+      ]
+    }
+  ],
+  "locations": [
+    {
+      "id": "room-101",
+      "building": "Building A",
+      "room": "101",
+      "optical_table": "Table 1"
+    }
+  ],
+  "eyewear": [
+    {
+      "id": "eyewear-red",
+      "name": "Red / near-IR eyewear",
+      "optical_density": 4,
+      "wavelength_min": "600 nm",
+      "wavelength_max": "900 nm"
+    }
+  ],
+  "collective_protections": [
+    {
+      "id": "enclosure-ti-sa",
+      "kind": "enclosure",
+      "description": "Enclosure of the Ti:Sa table with filtering windows",
+      "location_id": "room-101",
+      "laser_ids": [
+        "ti-sa-01"
+      ],
+      "interlocked": true,
+      "optical_density": 4,
+      "last_check": "2026-09-15"
+    },
+    {
+      "id": "door-101",
+      "kind": "interlock",
+      "description": "Door contact cutting the Ti:Sa shutter when the door opens",
+      "location_id": "room-101",
+      "laser_ids": [
+        "ti-sa-01"
+      ],
+      "interlocked": true,
+      "last_check": "2026-09-15"
+    },
+    {
+      "id": "light-101",
+      "kind": "warning_light",
+      "description": "Red light above the door, on while a laser is active",
+      "location_id": "room-101",
+      "laser_ids": [
+        "hene-01",
+        "ti-sa-01"
+      ]
+    },
+    {
+      "id": "stop-hene",
+      "kind": "beam_stop",
+      "description": "Beam stop at the end of the HeNe path",
+      "location_id": "room-101",
+      "laser_ids": [
+        "hene-01"
+      ]
+    }
+  ],
+  "assessments": [
+    {
+      "date": "2026-09-15",
+      "laser_id": "ti-sa-01",
+      "beam_name": "fundamental",
+      "location_id": "room-101",
+      "measures": [
+        "Wear eyewear when the enclosure is opened"
+      ],
+      "eyewear_ids": [
+        "eyewear-red"
+      ],
+      "collective_protection_ids": [
+        "enclosure-ti-sa",
+        "door-101",
+        "light-101"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,573 @@
+{
+  "$defs": {
+    "Beam": {
+      "additionalProperties": false,
+      "description": "One output of a laser, with the parameters the exposure calculation depends on.",
+      "properties": {
+        "name": {
+          "default": "main",
+          "description": "Name of the output, unique within the laser",
+          "title": "Name",
+          "type": "string"
+        },
+        "laser_type": {
+          "$ref": "#/$defs/LaserType"
+        },
+        "wavelength": {
+          "description": "Wavelength, with its unit, for example \"515 nm\"",
+          "examples": [
+            "515 nm"
+          ],
+          "title": "Wavelength",
+          "type": "string"
+        },
+        "power": {
+          "anyOf": [
+            {
+              "description": "Power, with its unit, for example \"5 mW\"",
+              "examples": [
+                "5 mW"
+              ],
+              "title": "Power",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Continuous or average power",
+          "title": "Power"
+        },
+        "pulse_energy": {
+          "anyOf": [
+            {
+              "description": "Energy, with its unit, for example \"10 uJ\"",
+              "examples": [
+                "10 uJ"
+              ],
+              "title": "Energy",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pulse Energy"
+        },
+        "pulse_duration": {
+          "anyOf": [
+            {
+              "description": "Duration, with its unit, for example \"100 fs\"",
+              "examples": [
+                "100 fs"
+              ],
+              "title": "Duration",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pulse Duration"
+        },
+        "repetition_rate": {
+          "anyOf": [
+            {
+              "description": "Frequency, with its unit, for example \"80 MHz\"",
+              "examples": [
+                "80 MHz"
+              ],
+              "title": "Frequency",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repetition Rate"
+        },
+        "diameter": {
+          "anyOf": [
+            {
+              "description": "Length, with its unit, for example \"0.7 mm\"",
+              "examples": [
+                "0.7 mm"
+              ],
+              "title": "Length",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Beam diameter at the output",
+          "title": "Diameter"
+        },
+        "divergence": {
+          "anyOf": [
+            {
+              "description": "Angle, with its unit, for example \"1.2 mrad\"",
+              "examples": [
+                "1.2 mrad"
+              ],
+              "title": "Angle",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Full divergence angle",
+          "title": "Divergence"
+        }
+      },
+      "required": [
+        "laser_type",
+        "wavelength"
+      ],
+      "title": "Beam",
+      "type": "object"
+    },
+    "CollectiveProtection": {
+      "additionalProperties": false,
+      "description": "A collective protection in place, with what it protects and its follow-up.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ProtectionKind"
+        },
+        "description": {
+          "description": "What is in place, in one sentence",
+          "title": "Description",
+          "type": "string"
+        },
+        "location_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Place where it is installed",
+          "title": "Location Id"
+        },
+        "laser_ids": {
+          "description": "Lasers it protects",
+          "items": {
+            "type": "string"
+          },
+          "title": "Laser Ids",
+          "type": "array"
+        },
+        "interlocked": {
+          "default": false,
+          "description": "Connected to an interlock that cuts the laser",
+          "title": "Interlocked",
+          "type": "boolean"
+        },
+        "optical_density": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optical density, for a screen or a window",
+          "title": "Optical Density"
+        },
+        "last_check": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Date of the last check",
+          "title": "Last Check"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "description"
+      ],
+      "title": "CollectiveProtection",
+      "type": "object"
+    },
+    "Eyewear": {
+      "additionalProperties": false,
+      "description": "Protective eyewear: optical density valid between two wavelengths.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "optical_density": {
+          "exclusiveMinimum": 0,
+          "title": "Optical Density",
+          "type": "number"
+        },
+        "wavelength_min": {
+          "description": "Wavelength, with its unit, for example \"515 nm\"",
+          "examples": [
+            "515 nm"
+          ],
+          "title": "Wavelength",
+          "type": "string"
+        },
+        "wavelength_max": {
+          "description": "Wavelength, with its unit, for example \"515 nm\"",
+          "examples": [
+            "515 nm"
+          ],
+          "title": "Wavelength",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "optical_density",
+        "wavelength_min",
+        "wavelength_max"
+      ],
+      "title": "Eyewear",
+      "type": "object"
+    },
+    "Laser": {
+      "additionalProperties": false,
+      "description": "A laser of a unit's park.",
+      "properties": {
+        "id": {
+          "description": "Stable identifier",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "manufacturer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Manufacturer"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "location_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Identifier of the place where it is used",
+          "title": "Location Id"
+        },
+        "beams": {
+          "items": {
+            "$ref": "#/$defs/Beam"
+          },
+          "minItems": 1,
+          "title": "Beams",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "name",
+        "beams"
+      ],
+      "title": "Laser",
+      "type": "object"
+    },
+    "LaserType": {
+      "description": "Emission regime of a beam.",
+      "enum": [
+        "continuous",
+        "pulsed"
+      ],
+      "title": "LaserType",
+      "type": "string"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "building": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building"
+        },
+        "room": {
+          "title": "Room",
+          "type": "string"
+        },
+        "optical_table": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Optical Table"
+        }
+      },
+      "required": [
+        "id",
+        "room"
+      ],
+      "title": "Location",
+      "type": "object"
+    },
+    "ProtectionKind": {
+      "description": "Kind of collective protection (as opposed to eyewear, which is individual).",
+      "enum": [
+        "enclosure",
+        "beam_tube",
+        "beam_stop",
+        "shutter",
+        "screen",
+        "interlock",
+        "emergency_stop",
+        "warning_light",
+        "access_control",
+        "other"
+      ],
+      "title": "ProtectionKind",
+      "type": "string"
+    },
+    "RiskAssessment": {
+      "additionalProperties": false,
+      "description": "Dated result of an assessment for one beam and one place.",
+      "properties": {
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        },
+        "laser_id": {
+          "title": "Laser Id",
+          "type": "string"
+        },
+        "beam_name": {
+          "title": "Beam Name",
+          "type": "string"
+        },
+        "location_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location Id"
+        },
+        "mpe": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "MPE retained, with its unit",
+          "title": "Mpe"
+        },
+        "nohd": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "NOHD retained, with its unit",
+          "title": "Nohd"
+        },
+        "laser_class": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Laser Class"
+        },
+        "measures": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Measures",
+          "type": "array"
+        },
+        "eyewear_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Eyewear Ids",
+          "type": "array"
+        },
+        "collective_protection_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Collective Protection Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "date",
+        "laser_id",
+        "beam_name"
+      ],
+      "title": "RiskAssessment",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Root of the data file: this is the schema published as JSON Schema.",
+  "properties": {
+    "schema_version": {
+      "default": "0.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unit_name": {
+      "description": "Name of the unit or laboratory",
+      "title": "Unit Name",
+      "type": "string"
+    },
+    "lasers": {
+      "items": {
+        "$ref": "#/$defs/Laser"
+      },
+      "title": "Lasers",
+      "type": "array"
+    },
+    "locations": {
+      "items": {
+        "$ref": "#/$defs/Location"
+      },
+      "title": "Locations",
+      "type": "array"
+    },
+    "eyewear": {
+      "items": {
+        "$ref": "#/$defs/Eyewear"
+      },
+      "title": "Eyewear",
+      "type": "array"
+    },
+    "collective_protections": {
+      "items": {
+        "$ref": "#/$defs/CollectiveProtection"
+      },
+      "title": "Collective Protections",
+      "type": "array"
+    },
+    "assessments": {
+      "items": {
+        "$ref": "#/$defs/RiskAssessment"
+      },
+      "title": "Assessments",
+      "type": "array"
+    }
+  },
+  "required": [
+    "unit_name"
+  ],
+  "title": "Laser park of a unit",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
